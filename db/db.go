@@ -4,6 +4,8 @@ import (
 	"database/sql"
 
 	"goTestApi/config"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 // NewDB connects to desired database
@@ -15,7 +17,7 @@ func NewDB(config *config.Config) (*sql.DB, error) {
 	}
 
 	if err = sqliteDb.Ping(); err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	return sqliteDb, nil
