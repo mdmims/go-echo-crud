@@ -1,6 +1,11 @@
 package main
 
 import (
+	"fmt"
+
+	"goTestApi/config"
+	"goTestApi/db"
+
 	"github.com/joho/godotenv"
 )
 
@@ -11,5 +16,7 @@ func init() {
 }
 
 func main() {
-	panic("not implemented")
+	// initialize DB
+	d := db.ConnectDB(config.New())
+	fmt.Println(d)
 }

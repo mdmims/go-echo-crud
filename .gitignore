@@ -60,4 +60,5 @@ Temporary Items
 
 .env
 *.log
-goapi
+*.db
+*.sqlite
