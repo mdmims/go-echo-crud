@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"goTestApi/config"
 	"goTestApi/db"
 
@@ -17,6 +15,10 @@ func init() {
 
 func main() {
 	// initialize DB
-	d := db.ConnectDB(config.New())
-	fmt.Println(d)
+	d, err := db.NewDB(config.New())
+	if err != nil {
+		panic(err)
+	}
+	defer d.Close()
+
 }

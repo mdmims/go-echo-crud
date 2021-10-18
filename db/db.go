@@ -4,28 +4,19 @@ import (
 	"database/sql"
 
 	"goTestApi/config"
-
-	_ "github.com/mattn/go-sqlite3"
 )
 
-// ConnectDB connects to desired database
-func ConnectDB(config *config.Config) *sql.DB {
+// NewDB connects to desired database
+func NewDB(config *config.Config) (*sql.DB, error) {
 	// connect to DB
-	db, err := sql.Open(
-		"sqlite3", config.DBNAME,
-	)
-	checkErr(err)
-
-	if err = db.Ping(); err != nil {
-		panic(err)
-	}
-
-	return db
-}
-
-// checkErr checks for errors and panics if found
-func checkErr(err error) {
+	sqliteDb, err := sql.Open("sqlite3", config.DBNAME)
 	if err != nil {
+		return nil, err
+	}
+
+	if err = sqliteDb.Ping(); err != nil {
 		panic(err)
 	}
+
+	return sqliteDb, nil
 }
