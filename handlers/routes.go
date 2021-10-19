@@ -5,8 +5,9 @@ import (
 )
 
 func (h *Handler) Register(v1 *echo.Group) {
-	// ticket header
-	ticket := v1.Group("/items")
-	ticket.GET("", h.getAllItems)
-	ticket.POST("", h.createItem)
+	// all tickets
+	items := v1.Group("/items")
+	items.GET("", h.getAllItems)
+	items.GET("/:id", h.getItem)
+	items.POST("", h.createItem)
 }

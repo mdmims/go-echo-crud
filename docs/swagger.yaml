@@ -29,6 +29,37 @@ info:
   title: Go Sample API
   version: "1.0"
 paths:
+  /item/{ID}:
+    get:
+      consumes:
+      - application/json
+      operationId: get-string-by-int
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/repository.itemsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/repository.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/repository.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/repository.Error'
+      summary: retrieve single item
   /items:
     get:
       consumes:

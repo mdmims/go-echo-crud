@@ -94,3 +94,30 @@ func (t *ItemStore) Create(i *models.Items) (*models.Items, error) {
 
 	return i, nil
 }
+
+func (t *ItemStore) GetById(id int) (*models.Items, error) {
+	// Get a Tx for making transaction requests.
+	tx, err := t.db.Begin()
+	if err != nil {
+		return nil, err
+	}
+	// Defer a rollback in case anything fails.
+	defer tx.Rollback()
+
+	var i models.Items
+
+	// submit query
+	if err := t.db.QueryRow(
+		"select id, name, price, description, created_at from items where id = ?",
+		id,
+	).Scan(&i.ID, &i.Name, &i.Price, &i.Description, &i.CreatedAt); err != nil {
+		return nil, err
+	}
+
+	// Commit the transaction.
+	if err = tx.Commit(); err != nil {
+		return nil, err
+	}
+
+	return &i, nil
+}

@@ -3,6 +3,7 @@ package handlers
 import (
 	"database/sql"
 	"net/http"
+	"strconv"
 
 	"goTestApi/models"
 	"goTestApi/repository"
@@ -54,6 +55,37 @@ func (h *Handler) createItem(c echo.Context) error {
 	i, err := h.itemStore.Create(&m)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
+	}
+
+	return c.JSON(http.StatusOK, repository.NewitemsResponse(i))
+}
+
+// getItem godoc
+// @Summary retrieve single item
+// @ID get-string-by-int
+// @Accept json
+// @Produce json
+// @Param id path int true "ID"
+// @Success 200 {object} repository.itemsResponse
+// @Failure 400 {object} repository.Error
+// @Failure 404 {object} repository.Error
+// @Failure 500 {object} repository.Error
+// @Router /item/{ID} [get]
+func (h *Handler) getItem(c echo.Context) error {
+	// retrieve path param value and convert to int
+	id := c.Param("id")
+	idd, err := strconv.Atoi(id)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err)
+	}
+
+	// query for results
+	i, err := h.itemStore.GetById(idd)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return c.JSON(http.StatusNotFound, repository.Errorf("404", "No items found."))
+		}
+		return c.JSON(http.StatusInternalServerError, repository.Errorf("500", "Internal Server Error."))
 	}
 
 	return c.JSON(http.StatusOK, repository.NewitemsResponse(i))

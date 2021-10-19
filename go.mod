@@ -4,6 +4,7 @@ go 1.16
 
 require (
 	github.com/go-openapi/spec v0.20.4 // indirect
+	github.com/golang/mock v1.6.0 // indirect
 	github.com/joho/godotenv v1.4.0
 	github.com/labstack/echo-contrib v0.11.0
 	github.com/labstack/echo/v4 v4.6.1
