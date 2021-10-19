@@ -1,6 +1,11 @@
 # Go Sample API using Echo framework
 Echo: https://echo.labstack.com/
 
+## TODO
+- initialize DB + migrations support
+- in-memory TTL cache for DB queries
+- stub external api call
+
 ## Requirements
 Install Go `https://golang.org/doc/install`
 
