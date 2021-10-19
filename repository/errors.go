@@ -1,53 +1,38 @@
 package repository
 
 import (
-	"encoding/json"
 	"fmt"
+	"net/http"
 )
 
 const (
-	ECONFLICT       = "conflict"
-	EINTERNAL       = "internal error"
-	EINVALID        = "invalid"
-	ENOTFOUND       = "not found"
-	ENOTIMPLEMENTED = "not implemented"
-	EUNAUTHORIZED   = "unauthorized"
+	ENOTFOUND  = "not found"
+	EINTERNAL  = "server error"
+	EMALFORMED = "schema invalid"
 )
 
-type MyError struct {
-	MyError error
+type Error struct {
+	Status  int    `json:"Status"`
+	Cause   string `json:"-"`
+	Message string `json:"Message"`
 }
 
-func (err MyError) Error() string {
-	return fmt.Sprintf("error: message=%s", err.MyError)
+func (e *Error) Error() string {
+	return fmt.Sprintf("wtf error: status=%v cause=%s message=%s", e.Status, e.Cause, e.Message)
 }
 
-func (err MyError) MarshalJSON() ([]byte, error) {
-	return json.Marshal(err.MyError.Error())
+func NewError(err error, code int, errMessage string) Error {
+	e := Error{}
+	e.Status = code
+	e.Cause = err.Error()
+	e.Message = errMessage
+	return e
 }
 
-// HTTPError returns error response to client in friendly structure
-type HTTPError struct {
-	Cause  error  `json:"Cause"`
-	Detail string `json:"Detail"`
-	Status int    `json:"Status"`
-}
-
-func (e *HTTPError) Error() string {
-	if e.Cause == nil {
-		return e.Detail
-	}
-	return e.Detail + " : " + e.Cause.Error()
-}
-
-func NewHTTPError(err error, status int, detail string) error {
-	// marshal our error
-	e := MyError{MyError: err}
-
-	// return details
-	return &HTTPError{
-		Cause:  e,
-		Detail: detail,
-		Status: status,
+func NotFound() Error {
+	return Error{
+		Status:  http.StatusNotFound,
+		Cause:   ENOTFOUND,
+		Message: ENOTFOUND,
 	}
 }

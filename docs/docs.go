@@ -23,7 +23,7 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/item/{ID}": {
+        "/item/{id}": {
             "get": {
                 "consumes": [
                     "application/json"
@@ -161,13 +161,11 @@ var doc = `{
         "repository.Error": {
             "type": "object",
             "properties": {
-                "code": {
-                    "description": "Machine-readable error code.",
+                "Message": {
                     "type": "string"
                 },
-                "message": {
-                    "description": "Human-readable error message.",
-                    "type": "string"
+                "Status": {
+                    "type": "integer"
                 }
             }
         },

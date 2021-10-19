@@ -21,7 +21,7 @@ func TestGetItemReturns404ForMissingItem(t *testing.T) {
 	itemNumber := 404
 
 	// expected error response
-	j, _ := json.Marshal(repository.NewHTTPError(sql.ErrNoRows, http.StatusNotFound, repository.ENOTFOUND))
+	j, _ := json.Marshal(repository.NotFound())
 	s := fmt.Sprintf(string(j) + "\n")
 
 	// mock database calls
@@ -35,20 +35,24 @@ func TestGetItemReturns404ForMissingItem(t *testing.T) {
 	recorder := httptest.NewRecorder()
 	request, err := http.NewRequest(http.MethodGet, "/", nil)
 	c := e.NewContext(request, recorder)
+
 	c.SetPath("/v1/items")
 	c.SetPath("/:id")
 	c.SetParamNames("id")
 	c.SetParamValues("404")
+
 	require.NoError(t, err)
 
 	// get our Handler
 	h := NewHandler(store)
 
-	// assertions for getItem()
-	// assert status code is 404
-	if assert.NoError(t, h.getItem(c)) {
-		assert.Equal(t, http.StatusNotFound, recorder.Code)
-		assert.Equal(t, s, recorder.Body.String())
+	// test call and verify HTTPError returned
+	err = h.getItem(c)
+	httpError, exists := err.(*echo.HTTPError)
+	if exists {
+		assert.Equal(t, http.StatusNotFound, httpError.Code)
 	}
-
+	respData, _ := json.Marshal(httpError.Message)
+	respS := fmt.Sprintf(string(respData) + "\n")
+	assert.Equal(t, s, respS)
 }

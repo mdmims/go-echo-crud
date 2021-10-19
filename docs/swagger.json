@@ -9,7 +9,7 @@
     "host": "localhost:1323",
     "basePath": "/v1",
     "paths": {
-        "/item/{ID}": {
+        "/item/{id}": {
             "get": {
                 "consumes": [
                     "application/json"
@@ -147,13 +147,11 @@
         "repository.Error": {
             "type": "object",
             "properties": {
-                "code": {
-                    "description": "Machine-readable error code.",
+                "Message": {
                     "type": "string"
                 },
-                "message": {
-                    "description": "Human-readable error message.",
-                    "type": "string"
+                "Status": {
+                    "type": "integer"
                 }
             }
         },

@@ -2,12 +2,10 @@ basePath: /v1
 definitions:
   repository.Error:
     properties:
-      code:
-        description: Machine-readable error code.
+      Message:
         type: string
-      message:
-        description: Human-readable error message.
-        type: string
+      Status:
+        type: integer
     type: object
   repository.itemsResponse:
     properties:
@@ -29,7 +27,7 @@ info:
   title: Go Sample API
   version: "1.0"
 paths:
-  /item/{ID}:
+  /item/{id}:
     get:
       consumes:
       - application/json
