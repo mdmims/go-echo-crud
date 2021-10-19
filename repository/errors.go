@@ -1,23 +1,49 @@
 package repository
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+)
 
-type Error struct {
-	// Machine-readable error code.
-	Code string
+const (
+	ECONFLICT       = "conflict"
+	EINTERNAL       = "internal error"
+	EINVALID        = "invalid"
+	ENOTFOUND       = "not found"
+	ENOTIMPLEMENTED = "not implemented"
+	EUNAUTHORIZED   = "unauthorized"
+)
 
-	// Human-readable error message.
-	Message string
+type MyError struct {
+	MyError error
 }
 
-func (e *Error) Error() string {
-	return fmt.Sprintf("error: code=%s message=%s", e.Code, e.Message)
+func (err MyError) Error() string {
+	return fmt.Sprintf("error: message=%s", err.MyError)
 }
 
-// Errorf is a helper function to return an Error with a given code and formatted message.
-func Errorf(code string, format string, args ...interface{}) *Error {
-	return &Error{
-		Code:    code,
-		Message: fmt.Sprintf(format, args...),
+func (err MyError) MarshalJSON() ([]byte, error) {
+	return json.Marshal(err.MyError.Error())
+}
+
+type HTTPError struct {
+	Cause  error  `json:"Cause"`
+	Detail string `json:"Detail"`
+	Status int    `json:"Status"`
+}
+
+func (e *HTTPError) Error() string {
+	if e.Cause == nil {
+		return e.Detail
+	}
+	return e.Detail + " : " + e.Cause.Error()
+}
+
+func NewHTTPError(err error, status int, detail string) error {
+	e := MyError{MyError: err}
+	return &HTTPError{
+		Cause:  e,
+		Detail: detail,
+		Status: status,
 	}
 }

@@ -24,7 +24,7 @@ build-swagger:
 .PHONY: build-mocks
 ## build-mocks: builds interface mocks via mockgen cli
 build-mocks:
-	mockgen -source=repository/interfaces.go -destination=mocks/ticket.go -package=mocks
+	mockgen -source=repository/interfaces.go -destination=mocks/items.go -package=mocks
 
 
 .PHONY: help

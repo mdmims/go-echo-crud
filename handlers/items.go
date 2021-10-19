@@ -16,9 +16,9 @@ import (
 // @Accept json
 // @Produce json
 // @Success 200 {object} []repository.itemsResponse
-// @Failure 400 {object} repository.Error
-// @Failure 404 {object} repository.Error
-// @Failure 500 {object} repository.Error
+// @Failure 400 {object} repository.HTTPError
+// @Failure 404 {object} repository.HTTPError
+// @Failure 500 {object} repository.HTTPError
 // @Router /items [get]
 func (h *Handler) getAllItems(c echo.Context) error {
 	// retrieve data from DB
@@ -27,9 +27,9 @@ func (h *Handler) getAllItems(c echo.Context) error {
 	// check for errors or empty result
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return c.JSON(http.StatusNotFound, repository.Errorf("404", "No items found."))
+			return c.JSON(http.StatusNotFound, repository.NewHTTPError(err, http.StatusNotFound, repository.ENOTFOUND))
 		}
-		return c.JSON(http.StatusInternalServerError, repository.Errorf("500", "Internal Server Error."))
+		return c.JSON(http.StatusInternalServerError, repository.NewHTTPError(err, http.StatusUnprocessableEntity, repository.EINTERNAL))
 	}
 
 	return c.JSON(http.StatusOK, items)
@@ -41,15 +41,15 @@ func (h *Handler) getAllItems(c echo.Context) error {
 // @Produce json
 // @Param user body repository.itemsResponse true "Item details to create record."
 // @Success 200 {object} repository.itemsResponse
-// @Failure 400 {object} repository.Error
-// @Failure 404 {object} repository.Error
-// @Failure 500 {object} repository.Error
+// @Failure 400 {object} repository.HTTPError
+// @Failure 404 {object} repository.HTTPError
+// @Failure 500 {object} repository.HTTPError
 // @Router /items [post]
 func (h *Handler) createItem(c echo.Context) error {
 	var m models.Items
 
 	if err := c.Bind(&m); err != nil {
-		return c.JSON(http.StatusUnprocessableEntity, repository.Errorf("422", "Schema validation error."))
+		return c.JSON(http.StatusUnprocessableEntity, repository.NewHTTPError(err, http.StatusUnprocessableEntity, repository.EINVALID))
 	}
 
 	i, err := h.itemStore.Create(&m)
@@ -67,9 +67,9 @@ func (h *Handler) createItem(c echo.Context) error {
 // @Produce json
 // @Param id path int true "ID"
 // @Success 200 {object} repository.itemsResponse
-// @Failure 400 {object} repository.Error
-// @Failure 404 {object} repository.Error
-// @Failure 500 {object} repository.Error
+// @Failure 400 {object} repository.HTTPError
+// @Failure 404 {object} repository.HTTPError
+// @Failure 500 {object} repository.HTTPError
 // @Router /item/{ID} [get]
 func (h *Handler) getItem(c echo.Context) error {
 	// retrieve path param value and convert to int
@@ -83,9 +83,9 @@ func (h *Handler) getItem(c echo.Context) error {
 	i, err := h.itemStore.GetById(idd)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return c.JSON(http.StatusNotFound, repository.Errorf("404", "No items found."))
+			return c.JSON(http.StatusNotFound, repository.NewHTTPError(err, http.StatusNotFound, repository.ENOTFOUND))
 		}
-		return c.JSON(http.StatusInternalServerError, repository.Errorf("500", "Internal Server Error."))
+		return c.JSON(http.StatusInternalServerError, repository.NewHTTPError(err, http.StatusUnprocessableEntity, repository.EINTERNAL))
 	}
 
 	return c.JSON(http.StatusOK, repository.NewitemsResponse(i))
