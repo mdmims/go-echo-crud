@@ -17,8 +17,8 @@ func NewItemStore(db *sql.DB) *ItemStore {
 	}
 }
 
-func (t *ItemStore) GetAll() (*models.Items, error) {
-	var m models.Items
+func (t *ItemStore) GetAll() ([]models.Items, error) {
+	var m []models.Items
 
 	// Get a Tx for making transaction requests.
 	tx, err := t.db.Begin()
@@ -28,11 +28,27 @@ func (t *ItemStore) GetAll() (*models.Items, error) {
 	// Defer a rollback in case anything fails.
 	defer tx.Rollback()
 
-	// submit query
-	if err := t.db.QueryRow(
-		"select id, name, price, description, created_at from items",
-	).Scan(&m.ID, &m.Name, &m.Price, &m.Description, &m.CreatedAt); err != nil {
+	// query
+	rows, err := t.db.Query("select id, name, price, description, created_at from items")
+
+	if err != nil {
 		return nil, err
+	}
+
+	defer rows.Close()
+
+	// iterate over rows
+	for rows.Next() {
+		var i models.Items
+
+		// unmarshal data
+		err = rows.Scan(&i.ID, &i.Name, &i.Price, &i.Description, &i.CreatedAt)
+		if err != nil {
+			// log.Fatalf("Unable to scan the row. %v", err)
+			return nil, err
+		}
+
+		m = append(m, i)
 	}
 
 	// Commit the transaction.
@@ -40,7 +56,7 @@ func (t *ItemStore) GetAll() (*models.Items, error) {
 		return nil, err
 	}
 
-	return &m, nil
+	return m, nil
 }
 
 func (t *ItemStore) Create(i *models.Items) (*models.Items, error) {

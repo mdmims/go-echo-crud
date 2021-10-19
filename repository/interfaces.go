@@ -5,6 +5,6 @@ import (
 )
 
 type ItemsI interface {
-	GetAll() (*models.Items, error)
+	GetAll() ([]models.Items, error)
 	Create(i *models.Items) (*models.Items, error)
 }

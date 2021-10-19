@@ -21,6 +21,8 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/log"
 	"github.com/swaggo/echo-swagger"
+
+	_ "goTestApi/docs"
 )
 
 func init() {
@@ -29,6 +31,11 @@ func init() {
 	}
 }
 
+// @title Go Sample API
+// @version 1.0
+// @description Sample Go Rest API using Echo Framework and sqlite
+// @host localhost:1323
+// @BasePath /v1
 func main() {
 	// instantiate Echo
 	e := echo.New()
@@ -41,13 +48,6 @@ func main() {
 		MaxAge:     30, //days
 	})
 
-	// initialize DB
-	d, err := db.NewDB(config.New())
-	if err != nil {
-		panic(err)
-	}
-	defer d.Close()
-
 	// define log level
 	e.HideBanner = true
 	e.Logger.SetLevel(log.DEBUG)
@@ -57,15 +57,19 @@ func main() {
 	p.Use(e)
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
-	e.Use(middleware.TimeoutWithConfig(middleware.TimeoutConfig{
-		Timeout: 10 * time.Second,
-	}))
 
 	// routes
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
 
 	// version endpoints
 	v1 := e.Group("/v1")
+
+	// initialize DB
+	d, err := db.NewDB(config.New())
+	if err != nil {
+		panic(err)
+	}
+	defer d.Close()
 
 	// instantiate handlers
 	items := repository.NewItemStore(d)

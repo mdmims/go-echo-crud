@@ -1,0 +1,88 @@
+basePath: /v1
+definitions:
+  repository.Error:
+    properties:
+      code:
+        description: Machine-readable error code.
+        type: string
+      message:
+        description: Human-readable error message.
+        type: string
+    type: object
+  repository.itemsResponse:
+    properties:
+      CreatedAt:
+        type: string
+      Description:
+        type: string
+      ID:
+        type: integer
+      Name:
+        type: string
+      Price:
+        type: number
+    type: object
+host: localhost:1323
+info:
+  contact: {}
+  description: Sample Go Rest API using Echo Framework and sqlite
+  title: Go Sample API
+  version: "1.0"
+paths:
+  /items:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/repository.itemsResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/repository.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/repository.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/repository.Error'
+      summary: fetch all items
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Item details to create record.
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/repository.itemsResponse'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/repository.itemsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/repository.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/repository.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/repository.Error'
+      summary: create single item
+swagger: "2.0"
