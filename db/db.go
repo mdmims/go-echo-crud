@@ -3,7 +3,7 @@ package db
 import (
 	"database/sql"
 
-	"goTestApi/config"
+	"github.com/mdmims/go-echo-crud/config"
 
 	_ "github.com/mattn/go-sqlite3"
 )

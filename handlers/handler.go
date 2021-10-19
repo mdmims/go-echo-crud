@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"goTestApi/repository"
+	"github.com/mdmims/go-echo-crud/repository"
 )
 
 type Handler struct {

@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"goTestApi/models"
-	"goTestApi/repository"
+	"github.com/mdmims/go-echo-crud/models"
+	"github.com/mdmims/go-echo-crud/repository"
 
 	"github.com/labstack/echo/v4"
 )

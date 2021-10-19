@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"time"
 
-	"goTestApi/models"
+	"github.com/mdmims/go-echo-crud/models"
 )
 
 type ItemStore struct {

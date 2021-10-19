@@ -3,7 +3,7 @@ package repository
 import (
 	"time"
 
-	"goTestApi/models"
+	"github.com/mdmims/go-echo-crud/models"
 )
 
 // itemsResponse represents items data as JSON

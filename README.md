@@ -7,7 +7,9 @@ Echo: https://echo.labstack.com/
 - stub external api call
 
 ## Requirements
-Install Go `https://golang.org/doc/install`
+- Install Go `https://golang.org/doc/install`
+- Table must exist in sqlite DB prior to using API. Create statement defined: [000001_create_items_table.up.sql](db/migrations/000001_create_items_table.up.sql)
+  - TODO included to remove this manual step
 
 ## Environment Variables
 Required for ETMS connection \

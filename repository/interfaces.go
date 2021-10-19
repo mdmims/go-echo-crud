@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"goTestApi/models"
+	"github.com/mdmims/go-echo-crud/models"
 )
 
 type ItemsI interface {

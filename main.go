@@ -8,10 +8,10 @@ import (
 	"syscall"
 	"time"
 
-	"goTestApi/config"
-	"goTestApi/db"
-	"goTestApi/handlers"
-	"goTestApi/repository"
+	"github.com/mdmims/go-echo-crud/config"
+	"github.com/mdmims/go-echo-crud/db"
+	"github.com/mdmims/go-echo-crud/handlers"
+	"github.com/mdmims/go-echo-crud/repository"
 
 	"gopkg.in/natefinch/lumberjack.v2"
 
@@ -22,7 +22,7 @@ import (
 	"github.com/labstack/gommon/log"
 	"github.com/swaggo/echo-swagger"
 
-	_ "goTestApi/docs"
+	_ "github.com/mdmims/go-echo-crud/docs"
 )
 
 func init() {

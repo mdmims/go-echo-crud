@@ -5,7 +5,7 @@
 package mocks
 
 import (
-	models "goTestApi/models"
+	models "github.com/mdmims/go-echo-crud/models"
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
