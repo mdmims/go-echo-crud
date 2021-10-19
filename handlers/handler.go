@@ -5,7 +5,7 @@ import (
 )
 
 type Handler struct {
-	itemStore 	repository.ItemsI
+	itemStore repository.ItemsI
 }
 
 func NewHandler(i repository.ItemsI) *Handler {
