@@ -10,6 +10,8 @@ import (
 
 	"goTestApi/config"
 	"goTestApi/db"
+	"goTestApi/handlers"
+	"goTestApi/repository"
 
 	"gopkg.in/natefinch/lumberjack.v2"
 
@@ -61,6 +63,18 @@ func main() {
 
 	// routes
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
+
+	// version endpoints
+	v1 := e.Group("/v1")
+
+	// instantiate handlers
+	items := repository.NewItemStore(d)
+
+	// map handlers
+	h := handlers.NewHandler(items)
+
+	// register endpoints
+	h.Register(v1)
 
 	// start server and handle graceful shutdown with max timeout
 	go func() {
