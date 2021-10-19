@@ -5,7 +5,7 @@ import (
 )
 
 func (h *Handler) Register(v1 *echo.Group) {
-	// all tickets
+	// items endpoints
 	items := v1.Group("/items")
 	items.GET("", h.getAllItems)
 	items.GET("/:id", h.getItem)

@@ -44,7 +44,7 @@ func TestGetItemReturns404ForMissingItem(t *testing.T) {
 	// get our Handler
 	h := NewHandler(store)
 
-	// assertions for getTicket()
+	// assertions for getItem()
 	// assert status code is 404
 	if assert.NoError(t, h.getItem(c)) {
 		assert.Equal(t, http.StatusNotFound, recorder.Code)

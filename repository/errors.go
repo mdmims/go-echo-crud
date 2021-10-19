@@ -26,6 +26,7 @@ func (err MyError) MarshalJSON() ([]byte, error) {
 	return json.Marshal(err.MyError.Error())
 }
 
+// HTTPError returns error response to client in friendly structure
 type HTTPError struct {
 	Cause  error  `json:"Cause"`
 	Detail string `json:"Detail"`
@@ -40,7 +41,10 @@ func (e *HTTPError) Error() string {
 }
 
 func NewHTTPError(err error, status int, detail string) error {
+	// marshal our error
 	e := MyError{MyError: err}
+
+	// return details
 	return &HTTPError{
 		Cause:  e,
 		Detail: detail,
