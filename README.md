@@ -12,7 +12,7 @@ Echo: https://echo.labstack.com/
   - TODO included to remove this manual step
 
 ## Environment Variables
-Required for ETMS connection \
+Required for DB connection \
 Defined: [config.go](config/config.go)
 
 ## Running the server
