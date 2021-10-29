@@ -28,7 +28,7 @@ func (t *ItemStore) GetAll() ([]models.Items, error) {
 	// Defer a rollback in case anything fails.
 	defer tx.Rollback()
 
-	// this will pull places with telcode > 50 into the slice pp
+	// run query and scan results into struct
 	err = t.db.Select(&m, "select id, name, price, description, created_at from items")
 	if err != nil {
 		return nil, err
