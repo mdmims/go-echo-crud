@@ -1,17 +1,17 @@
 package repository
 
 import (
-	"database/sql"
 	"time"
 
+	"github.com/jmoiron/sqlx"
 	"github.com/mdmims/go-echo-crud/models"
 )
 
 type ItemStore struct {
-	db *sql.DB
+	db *sqlx.DB
 }
 
-func NewItemStore(db *sql.DB) *ItemStore {
+func NewItemStore(db *sqlx.DB) *ItemStore {
 	return &ItemStore{
 		db: db,
 	}
@@ -28,27 +28,10 @@ func (t *ItemStore) GetAll() ([]models.Items, error) {
 	// Defer a rollback in case anything fails.
 	defer tx.Rollback()
 
-	// query
-	rows, err := t.db.Query("select id, name, price, description, created_at from items")
-
+	// this will pull places with telcode > 50 into the slice pp
+	err = t.db.Select(&m, "select id, name, price, description, created_at from items")
 	if err != nil {
 		return nil, err
-	}
-
-	defer rows.Close()
-
-	// iterate over rows
-	for rows.Next() {
-		var i models.Items
-
-		// unmarshal data
-		err = rows.Scan(&i.ID, &i.Name, &i.Price, &i.Description, &i.CreatedAt)
-		if err != nil {
-			// log.Fatalf("Unable to scan the row. %v", err)
-			return nil, err
-		}
-
-		m = append(m, i)
 	}
 
 	// Commit the transaction.
@@ -107,10 +90,7 @@ func (t *ItemStore) GetById(id int) (*models.Items, error) {
 	var i models.Items
 
 	// submit query
-	if err := t.db.QueryRow(
-		"select id, name, price, description, created_at from items where id = ?",
-		id,
-	).Scan(&i.ID, &i.Name, &i.Price, &i.Description, &i.CreatedAt); err != nil {
+	if err := t.db.Get(&i, "select id, name, price, description, created_at from items where id = ?", id); err != nil {
 		return nil, err
 	}
 

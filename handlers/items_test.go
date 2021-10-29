@@ -8,8 +8,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"goTestApi/mocks"
-	"goTestApi/repository"
+	"github.com/mdmims/go-echo-crud/mocks"
+	"github.com/mdmims/go-echo-crud/repository"
 
 	"github.com/golang/mock/gomock"
 	"github.com/labstack/echo/v4"
