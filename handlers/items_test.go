@@ -30,6 +30,12 @@ func TestGetItemReturns404ForMissingItem(t *testing.T) {
 	store := mocks.NewMockItemsI(mockCtrl)
 	store.EXPECT().GetById(itemNumber).Times(1).Return(nil, sql.ErrNoRows)
 
+	// mock cache calls
+	cache := mocks.NewMockServerCache(mockCtrl)
+	defer mockCtrl.Finish()
+	cache.EXPECT().Get("404").Times(1).Return(nil, false)
+	cache.EXPECT().Set("404", repository.NotFound()).Times(1).Return(nil)
+
 	// use Echo context for http request
 	e := echo.New()
 	recorder := httptest.NewRecorder()
@@ -44,7 +50,7 @@ func TestGetItemReturns404ForMissingItem(t *testing.T) {
 	require.NoError(t, err)
 
 	// get our Handler
-	h := NewHandler(store)
+	h := NewHandler(store, cache)
 
 	// test call and verify HTTPError returned
 	err = h.getItem(c)

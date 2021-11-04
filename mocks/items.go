@@ -5,10 +5,11 @@
 package mocks
 
 import (
-	models "github.com/mdmims/go-echo-crud/models"
 	reflect "reflect"
+	time "time"
 
 	gomock "github.com/golang/mock/gomock"
+	models "github.com/mdmims/go-echo-crud/models"
 )
 
 // MockItemsI is a mock of ItemsI interface.
@@ -77,4 +78,94 @@ func (m *MockItemsI) GetById(id int) (*models.Items, error) {
 func (mr *MockItemsIMockRecorder) GetById(id interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetById", reflect.TypeOf((*MockItemsI)(nil).GetById), id)
+}
+
+// MockServerCache is a mock of ServerCache interface.
+type MockServerCache struct {
+	ctrl     *gomock.Controller
+	recorder *MockServerCacheMockRecorder
+}
+
+// MockServerCacheMockRecorder is the mock recorder for MockServerCache.
+type MockServerCacheMockRecorder struct {
+	mock *MockServerCache
+}
+
+// NewMockServerCache creates a new mock instance.
+func NewMockServerCache(ctrl *gomock.Controller) *MockServerCache {
+	mock := &MockServerCache{ctrl: ctrl}
+	mock.recorder = &MockServerCacheMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockServerCache) EXPECT() *MockServerCacheMockRecorder {
+	return m.recorder
+}
+
+// Count mocks base method.
+func (m *MockServerCache) Count() int {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Count")
+	ret0, _ := ret[0].(int)
+	return ret0
+}
+
+// Count indicates an expected call of Count.
+func (mr *MockServerCacheMockRecorder) Count() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Count", reflect.TypeOf((*MockServerCache)(nil).Count))
+}
+
+// Get mocks base method.
+func (m *MockServerCache) Get(key string) (interface{}, bool) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Get", key)
+	ret0, _ := ret[0].(interface{})
+	ret1, _ := ret[1].(bool)
+	return ret0, ret1
+}
+
+// Get indicates an expected call of Get.
+func (mr *MockServerCacheMockRecorder) Get(key interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockServerCache)(nil).Get), key)
+}
+
+// Set mocks base method.
+func (m *MockServerCache) Set(key string, data interface{}) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Set", key, data)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Set indicates an expected call of Set.
+func (mr *MockServerCacheMockRecorder) Set(key, data interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Set", reflect.TypeOf((*MockServerCache)(nil).Set), key, data)
+}
+
+// SetCacheSizeLimit mocks base method.
+func (m *MockServerCache) SetCacheSizeLimit(limit int) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "SetCacheSizeLimit", limit)
+}
+
+// SetCacheSizeLimit indicates an expected call of SetCacheSizeLimit.
+func (mr *MockServerCacheMockRecorder) SetCacheSizeLimit(limit interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetCacheSizeLimit", reflect.TypeOf((*MockServerCache)(nil).SetCacheSizeLimit), limit)
+}
+
+// SetTTL mocks base method.
+func (m *MockServerCache) SetTTL(ttl time.Duration) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "SetTTL", ttl)
+}
+
+// SetTTL indicates an expected call of SetTTL.
+func (mr *MockServerCacheMockRecorder) SetTTL(ttl interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetTTL", reflect.TypeOf((*MockServerCache)(nil).SetTTL), ttl)
 }

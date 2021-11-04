@@ -8,6 +8,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/ReneKroon/ttlcache/v2"
 	"github.com/mdmims/go-echo-crud/config"
 	"github.com/mdmims/go-echo-crud/db"
 	"github.com/mdmims/go-echo-crud/handlers"
@@ -71,11 +72,17 @@ func main() {
 	}
 	defer d.Close()
 
+	// setup TTL cache
+	var cache = ttlcache.NewCache()
+	c := repository.NewCacheStore(cache)
+	c.SetTTL(600 * time.Second)
+	c.SetCacheSizeLimit(500)
+
 	// instantiate handlers
 	items := repository.NewItemStore(d)
 
 	// map handlers
-	h := handlers.NewHandler(items)
+	h := handlers.NewHandler(items, c)
 
 	// register endpoints
 	h.Register(v1)

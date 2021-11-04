@@ -1,10 +1,15 @@
 # Go Sample API using Echo framework
-Echo: https://echo.labstack.com/
+___
+
+## Features
+- Basic CRUD API utilizing sqlite database
+- TTL Cache for database query results
+- Open API Spec/Swagger endpoint
 
 ## TODO
 - initialize DB + migrations support
-- in-memory TTL cache for DB queries
 - stub external api call
+- Unit + Integration tests
 
 ## Requirements
 - Install Go `https://golang.org/doc/install`

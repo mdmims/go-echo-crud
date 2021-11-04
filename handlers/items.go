@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"database/sql"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -79,13 +80,30 @@ func (h *Handler) getItem(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
 
+	// check cache
+	if value, exists := h.cache.Get(id); exists {
+		return c.JSON(http.StatusOK, value)
+	}
+
 	// query for results
 	i, err := h.itemStore.GetById(idd)
 	if err != nil {
 		if err == sql.ErrNoRows {
+			// set 404 response in cache
+			err := h.cache.Set(id, repository.NotFound())
+			if err != nil {
+				c.Logger().Warn(fmt.Sprintf("Unable to Set Cache key: %s, value: %v", id, repository.NotFound()))
+			}
+			// return 404
 			return echo.NewHTTPError(http.StatusNotFound, repository.NotFound())
 		}
 		return echo.NewHTTPError(http.StatusInternalServerError, repository.NewError(err, http.StatusInternalServerError, repository.EINTERNAL))
+	}
+
+	// set cache
+	err = h.cache.Set(id, repository.NewitemsResponse(i))
+	if err != nil {
+		c.Logger().Warn(fmt.Sprintf("Unable to Set Cache key: %s, value: %v", id, repository.NotFound()))
 	}
 
 	return c.JSON(http.StatusOK, repository.NewitemsResponse(i))
