@@ -37,14 +37,14 @@ jobs:
         run: |
           curl https://github.com/loadimpact/k6/releases/download/v0.34.1/k6-v0.34.1-linux-amd64.tar.gz -L | tar xvz --strip-components 1
 
-#      - name: Run local k6 load test
-#        run: |
-#          docker compose -f "docker-compose.yml" up -d
-#          ./k6 run loadtest.js
-      - name: Run k6
-        uses: k6io/action@v0.2.0
-        with:
-          filename: loadtest.js
+      - name: Run local k6 load test
+        run: |
+          docker compose -f "docker-compose.yml" up -d
+          docker run --network=go-echo-crud_default -i loadimpact/k6 run --no-usage-report - <loadtest.js
+#      - name: Run k6
+#        uses: k6io/action@v0.2.0
+#        with:
+#          filename: loadtest.js
 
       - name: Stop containers
         if: always()
