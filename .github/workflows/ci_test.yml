@@ -1,5 +1,9 @@
 on: [push, pull_request]
 name: Test
+
+env:
+  DBNAME: testing.db
+
 jobs:
   test:
     strategy:
@@ -27,8 +31,6 @@ jobs:
 
       - name: Start containers
         run: docker compose -f "docker-compose.yml" up -d --build
-        env:
-          DBNAME=testdb.db
 
       - name: Run local k6 test
         uses: k6io/action@v0.1
