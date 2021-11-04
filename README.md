@@ -23,11 +23,14 @@ Defined: [config.go](config/config.go)
 ## Running the server
 Defined in [Makefile](Makefile)
 
-Run
+Run the server
 > make run
 
 Build binary
 > make build
+
+Run unit tests in Docker
+> make unit
 
 ## Swagger
 Update docs within `/docs` directory: `make build-swagger`
