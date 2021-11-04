@@ -13,7 +13,7 @@ export const options = {
 };
 
 export default function () {
-    const res = http.get('http://localhost:1323/v1/health/ping');
+    const res = http.get('http://127.0.0.1:1323/v1/health/ping');
     check(res, { 'status was 200': (r) => r.status == 200 });
     sleep(1);
 }
