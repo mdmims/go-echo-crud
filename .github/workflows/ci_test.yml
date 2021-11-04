@@ -38,7 +38,6 @@ jobs:
 
       - name: test ports
         run: |
-          lsof -i :1323
           docker ps
           curl http://localhost:1323/v1/health/ping
 
