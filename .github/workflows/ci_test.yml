@@ -25,7 +25,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
 
+      - name: Start containers
+        run: docker compose -f "docker-compose.yml" up -d --build
+
       - name: Run local k6 test
         uses: k6io/action@v0.1
         with:
           filename: loadtest.js
+
+      - name: Stop containers
+        if: always()
+        run: docker compose -f "docker-compose.yml" down

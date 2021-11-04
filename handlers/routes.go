@@ -10,4 +10,8 @@ func (h *Handler) Register(v1 *echo.Group) {
 	items.GET("", h.getAllItems)
 	items.GET("/:id", h.getItem)
 	items.POST("", h.createItem)
+
+	// health ping endpoint
+	health := v1.Group("/health")
+	health.GET("/ping", h.ping)
 }

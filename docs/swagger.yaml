@@ -7,6 +7,13 @@ definitions:
       Status:
         type: integer
     type: object
+  repository.healthResponse:
+    properties:
+      Message:
+        type: string
+      StatusCode:
+        type: integer
+    type: object
   repository.itemsResponse:
     properties:
       CreatedAt:
@@ -27,6 +34,30 @@ info:
   title: Go Sample API
   version: "1.0"
 paths:
+  /health/ping:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/repository.healthResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/repository.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/repository.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/repository.Error'
+      summary: server health check
   /item/{id}:
     get:
       consumes:

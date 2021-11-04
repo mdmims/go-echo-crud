@@ -25,3 +25,16 @@ func NewitemsResponse(i *models.Items) *itemsResponse {
 	m.CreatedAt = i.CreatedAt
 	return m
 }
+
+// health response
+type healthResponse struct {
+	StatusCode int    `json:"StatusCode"`
+	Message    string `json:"Message"`
+}
+
+func NewHealthResponse(code int, message string) *healthResponse {
+	return &healthResponse{
+		StatusCode: code,
+		Message:    message,
+	}
+}
