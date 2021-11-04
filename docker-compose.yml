@@ -1,0 +1,15 @@
+version: "3.4"
+
+services:
+  goapi:
+    image: goapi
+    container_name: goapi
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command:
+      - ./goapi
+    ports:
+      - "1323:1323"
+    env_file:
+      - ./.env

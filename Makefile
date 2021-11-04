@@ -26,6 +26,10 @@ build-swagger:
 build-mocks:
 	mockgen -source=repository/interfaces.go -destination=mocks/items.go -package=mocks
 
+.PHONY: unit
+## unit: run unit tests
+unit:
+	docker compose -f docker-compose.yml run --rm goapi go test ./...
 
 .PHONY: help
 ## help: prints this help message
