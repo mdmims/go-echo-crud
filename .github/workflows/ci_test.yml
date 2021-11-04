@@ -20,28 +20,3 @@ jobs:
         uses: actions/checkout@v2
       - name: Test
         run: go test ./... -v
-
-  k6_load_test:
-    name: k6 Load Test
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-
-      - name: Start containers
-        run: |
-          docker compose -f "docker-compose.yml" up -d --build
-          curl http://127.0.0.1:1323/v1/health/ping
-
-      - name: Install k6
-        run: |
-          curl https://github.com/loadimpact/k6/releases/download/v0.34.1/k6-v0.34.1-linux-amd64.tar.gz -L | tar xvz --strip-components 1
-
-      - name: Run local k6 load test
-        run: |
-          ./k6 run loadtest.js
-
-      - name: Stop containers
-        if: always()
-        run: docker compose -f "docker-compose.yml" down
