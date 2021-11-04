@@ -32,10 +32,12 @@ jobs:
       - name: Start containers
         run: docker compose -f "docker-compose.yml" up -d --build
 
-      - name: Run local k6 test
-        uses: k6io/action@v0.1
-        with:
-          filename: loadtest.js
+#      - name: Run local k6 test
+#        uses: k6io/action@v0.1
+#        with:
+#          filename: loadtest.js
+      - name: Run local k6 load test
+        run: docker run --network=host -i loadimpact/k6 run --no-usage-report -<loadtest.js
 
       - name: Stop containers
         if: always()
