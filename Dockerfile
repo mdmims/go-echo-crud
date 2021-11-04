@@ -11,4 +11,6 @@ RUN apt-get -y update && apt-get install -y sqlite3
 
 COPY . .
 
+EXPOSE 1323
+
 RUN go build -o goapi
