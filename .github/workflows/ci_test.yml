@@ -32,6 +32,7 @@ jobs:
       - name: Start containers
         run: |
           docker compose -f "docker-compose.yml" up -d --build
+          apt-get install curl
           curl http://127.0.0.1:1323/v1/health/ping
 
       - name: Install k6
