@@ -11,5 +11,5 @@ services:
       - ./goapi
     ports:
       - "1323:1323"
-    env_file:
-      - ./.env
+    environment:
+      DBNAME: testdb.db

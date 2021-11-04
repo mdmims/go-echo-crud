@@ -11,4 +11,4 @@ RUN apt-get -y update && apt-get install -y sqlite3
 
 COPY . .
 
-RUN GOOS=linux GOARCH=amd64 go build -o goapi
+RUN go build -o goapi
